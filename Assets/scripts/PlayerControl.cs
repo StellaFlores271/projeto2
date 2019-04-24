@@ -23,7 +23,7 @@ public class PlayerControl : MonoBehaviour
                StopMusicAndTape();
                Destroy(other.gameObject);
                AudioManager.instance.PlaySoundLevelComplete(gameObject);
-               Destroy(gameObject);
+               DestroyPlayer();
                LevelManager.instance.ShowLevelComplete();
            }
            else if(other.gameObject.layer == LayerMask.NameToLayer("enemies")){
@@ -40,12 +40,16 @@ public class PlayerControl : MonoBehaviour
                StopMusicAndTape();
                AudioManager.instance.PlaySoundFail(gameObject);
                SFXManager.instance.ShowDieParticles(gameObject);
-               Destroy(gameObject);
+               DestroyPlayer();
                LevelManager.instance.ShowGameOverPanel();
            }
            void Impulse(float force){
                rb.velocity = Vector3.zero;
                rb.AddForce(Vector3.up * force, ForceMode2D.Impulse);
+           }
+           void DestroyPlayer(){
+               Camera.main.GetComponent<CameraFollow>().TurnOff();
+               Destroy(gameObject);
            }
        }
 }
